@@ -16,35 +16,82 @@ namespace RentalCarWeb.Controllers
         CarService carService = CarService.Instance;
         CouponService couponService = CouponService.Instance;
         ReservationValidationsService reservationValidations = ReservationValidationsService.Instance;
-        List<Reservation> reservations = new List<Reservation>();
+        IEnumerable<Reservation> reservations = new List<Reservation>();
         List<ReservationStatuses> reservationStatuses = new List<ReservationStatuses>();
         List<Coupon> coupons = new List<Coupon>();
 
         // GET: Reservation
-        public ActionResult Index()
+        public ActionResult Index(string search, string search2, string sortOrder)
         {
+            ViewBag.CarIDSortParam = String.IsNullOrEmpty(sortOrder) ? "Car ID_desc" : "";
+            ViewBag.PlateSortParam = sortOrder == "Car Plate" ? "Car Plate_desc" : "Car Plate";
+            ViewBag.CustomerSortParam = sortOrder == "Customer ID" ? "Customer ID_desc" : "Customer ID";
+            ViewBag.RStatusSortParam = sortOrder == "Reservation Status" ? "Reservation Status_desc" : "Reservation Status";
+            ViewBag.StartDateSortParam = sortOrder == "Start Date" ? "Start Date_desc" : "Start Date";
+            ViewBag.EndDateSortParam = sortOrder == "End Date" ? "End Date_desc" : "End Date";
+            ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
+            ViewBag.CouponCodeSortParam = sortOrder == "Coupon Code" ? "Coupon Code_desc" : "Coupon Code";
+
             reservations = reservationService.readAll();
-            return View(reservations);
-        }
+            switch (sortOrder)
+            {
+                case "Car ID_desc":
+                    reservations = reservations.OrderByDescending(r => r.carID);
+                    break;
+                case "Car Plate":
+                    reservations = reservations.OrderBy(r => r.carPlate);
+                    break;
+                case "Car Plate_desc":
+                    reservations = reservations.OrderByDescending(r => r.carPlate);
+                    break;
+                case "Customer ID":
+                    reservations = reservations.OrderBy(r => r.costumerID);
+                    break;
+                case "Customer ID_desc":
+                    reservations = reservations.OrderByDescending(r => r.costumerID);
+                    break;
+                case "Reservation Status":
+                    reservations = reservations.OrderBy(r => r.reservStatsID);
+                    break;
+                case "Reservation Status_desc":
+                    reservations = reservations.OrderByDescending(r => r.reservStatsID);
+                    break;
+                case "Start Date":
+                    reservations = reservations.OrderBy(r => r.startDate);
+                    break;
+                case "Start Date_desc":
+                    reservations = reservations.OrderByDescending(r => r.startDate);
+                    break;
+                case "End Date":
+                    reservations = reservations.OrderBy(r => r.endDate);
+                    break;
+                case "End Date_desc":
+                    reservations = reservations.OrderByDescending(r => r.endDate);
+                    break;
+                case "Location":
+                    reservations = reservations.OrderBy(r => r.location);
+                    break;
+                case "Location_desc":
+                    reservations = reservations.OrderByDescending(r => r.location);
+                    break;
+                case "Coupon Code":
+                    reservations = reservations.OrderBy(r => r.couponCode);
+                    break;
+                case "Coupon Code_desc":
+                    reservations = reservations.OrderByDescending(r => r.couponCode);
+                    break;
+                default:
+                    reservations = reservations.OrderBy(r => r.carID);
+                    break;
+            }
 
-        // GET: Opened Reservations
-        public ActionResult Index1()
-        {
-            reservations = reservationService.readByStatus(1);
-            return View(reservations);
-        }
-
-        // GET: Closed Reservations
-        public ActionResult Index2()
-        {
-            reservations = reservationService.readByStatus(2);
-            return View(reservations);
-        }
-
-        // GET: Canceled Reservations
-        public ActionResult Index3()
-        {
-            reservations = reservationService.readByStatus(3);
+            if (!String.IsNullOrEmpty(search))
+            {
+                reservations = reservations.Where(r => r.carPlate.Contains(search) || r.carID.ToString() == search);
+            } else if (!String.IsNullOrEmpty(search2))
+            {
+                reservations = reservations.Where(r => r.reservStatsID.ToString() == search2);
+            }
             return View(reservations);
         }
 

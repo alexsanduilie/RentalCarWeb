@@ -198,9 +198,6 @@
     <Content Include="Views\Reservation\Details.cshtml" />
     <Content Include="Views\Reservation\Create.cshtml" />
     <Content Include="Views\Reservation\Edit.cshtml" />
-    <Content Include="Views\Reservation\Index1.cshtml" />
-    <Content Include="Views\Reservation\Index2.cshtml" />
-    <Content Include="Views\Reservation\Index3.cshtml" />
     <Content Include="Views\Car\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

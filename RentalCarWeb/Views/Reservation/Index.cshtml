@@ -11,39 +11,51 @@
 @Styles.Render("~/Content/errorStyle.css")
 @Styles.Render("~/Content/buttonStyle.css")
 
+<form asp-controller="Reservation" asp-action="Index" method="get">
+    <p>
+        Search by Car ID or Car Plate: <input type="text" name="search">
+        <input type="submit" value="Filter" />
+        <input type="reset" value="Reset" />
+    </p>
+</form>
+
+<form asp-controller="Reservation Status" asp-action="Index" method="get">
+    <p>
+        Search by Reservation Status ID: <input type="text" name="search2">
+        <input type="submit" value="Filter" />
+        <input type="reset" value="Reset" />
+    </p>
+</form>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<a href='/Reservation/Index1'><button class=button>Opened Reservations</button></a>
-<a href='/Reservation/Index2'><button class=button>Closed Reservations</button></a>
-<a href='/Reservation/Index3'><button class=button>Cancelled Reservations</button></a>
-
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.carID)
+            @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.CarIDSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.carPlate)
+            @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.costumerID)
+            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.CustomerSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.reservStatsID)
+            @Html.ActionLink("Reservation Status", "Index", new { sortOrder = ViewBag.RStatusSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.startDate)
+            @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.endDate)
+            @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndDateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.location)
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.couponCode)
+            @Html.ActionLink("Coupon Code", "Index", new { sortOrder = ViewBag.CouponCodeSortParam })
         </th>
         <th></th>
     </tr>
