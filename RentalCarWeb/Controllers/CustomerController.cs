@@ -13,12 +13,16 @@ namespace RentalCarWeb.Controllers
     public class CustomerController : Controller
     {
         CustomerService customerService = CustomerService.Instance;
-        List<Customer> customers = new List<Customer>();
+        IEnumerable<Customer> customers = new List<Customer>();
 
         // GET: Customer
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
             customers = customerService.readAll();
+            if (!String.IsNullOrEmpty(search))
+            {
+                customers = customers.Where(c => c.customerID.ToString() == search || c.name.ToString().Contains(search));
+            }       
             return View(customers);
         }
 
