@@ -1,0 +1,86 @@
+﻿@model RentalCarWeb.Models.DTO.Reservation
+
+@{
+    ViewBag.Title = "Reservation Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Styles.Render("~/Content/tableStyle.css")
+@Styles.Render("~/Content/commonStyle.css")
+@Styles.Render("~/Content/errorStyle.css")
+
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.carID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.carID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.carPlate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.carPlate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.costumerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.costumerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reservStatsID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reservStatsID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.endDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.endDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.couponCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.couponCode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { carID = Model.carID, customerID = Model.costumerID }) |
+    @Html.ActionLink("Back to All Reservations List", "Index")
+</p>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<RentalCarWeb.Models.DTO.Car>
+
+@{
+    ViewBag.Title = "Cars List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Styles.Render("~/Content/tableStyle.css")
+@Styles.Render("~/Content/commonStyle.css")
+@Styles.Render("~/Content/errorStyle.css")
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.plate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.manufacturer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.plate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.manufacturer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.location)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.carID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.carID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.carID })
+            </td>
+        </tr>
+    }
+
+</table>

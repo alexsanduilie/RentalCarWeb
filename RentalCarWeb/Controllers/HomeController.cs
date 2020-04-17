@@ -26,5 +26,12 @@ namespace RentalCarWeb.Controllers
 
             return View();
         }
+        public ActionResult Menu()
+        {
+            ViewBag.Message = "Welcome to RentC, your brand new solution to manage and control your company's data without missing anything!";
+
+            return View();
+        }
+
     }
 }

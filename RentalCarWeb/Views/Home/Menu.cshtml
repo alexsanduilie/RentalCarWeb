@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Welcome to your Rental Car Application!";
+}
+
+@Styles.Render("~/Content/buttonStyle.css")
+@Styles.Render("~/Content/commonStyle.css")
+@Styles.Render("~/Content/errorStyle.css")
+
+<h2>@ViewBag.Title</h2>
+<br>
+<h3>@ViewBag.Message</h3>
+<br>
+
+<a href='/Reservation/Create'><button class=button>Register New Car Rent</button></a>
+<a href='/Reservation/Index'><button class=button>Update Car Rent</button></a>
+<a href='/Reservation/Index'><button class=button>List Rents</button></a>
+<a href='/Car/Index'><button class=button>List Available Cars</button></a>
+<a href='/Customer/Create'><button class=button>Register New Customer</button></a>
+<a href='/Customer/Index'><button class=button>Update Customer</button></a>
+<a href='/Customer/Index'><button class=button>List Customers</button></a>
+<a href='/Home/Menu'><button class=button>Exit Application</button></a>
+
+<img src="~/Content/RentACar.png" title="RentACar" width="408" height="294" align="right">
+
