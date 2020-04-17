@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.customerID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.name)
+            @Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.birthDate)

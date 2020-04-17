@@ -16,9 +16,21 @@ namespace RentalCarWeb.Controllers
         IEnumerable<Customer> customers = new List<Customer>();
 
         // GET: Customer
-        public ActionResult Index(string search)
+        public ActionResult Index(string search, string sortOrder)
         {
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "Customer Name" : "";
+
             customers = customerService.readAll();
+            switch (sortOrder)
+            {
+                case "Customer Name":
+                    customers = customers.OrderByDescending(c => c.name);
+                    break;
+                default:
+                    customers = customers.OrderBy(c => c.customerID);
+                    break;
+            }
+
             if (!String.IsNullOrEmpty(search))
             {
                 customers = customers.Where(c => c.customerID.ToString() == search || c.name.ToString().Contains(search));
