@@ -18,13 +18,34 @@ namespace RentalCarWeb.Controllers
         // GET: Customer
         public ActionResult Index(string search, string sortOrder)
         {
-            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "Customer Name" : "";
+            ViewBag.IdSortParam = String.IsNullOrEmpty(sortOrder) ? "Customer ID_desc" : "";
+            ViewBag.NameSortParam = sortOrder == "Customer Name" ? "Customer Name_desc" : "Customer Name";
+            ViewBag.BirthDateSortParam = sortOrder == "Birth Date" ? "Birth Date_desc" : "Birth Date";
+            ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
 
             customers = customerService.readAll();
             switch (sortOrder)
             {
+                case "Customer ID_desc":
+                    customers = customers.OrderByDescending(c => c.customerID);
+                    break;
                 case "Customer Name":
+                    customers = customers.OrderBy(c => c.name);
+                    break;
+                case "Customer Name_desc":
                     customers = customers.OrderByDescending(c => c.name);
+                    break;
+                case "Birth Date":
+                    customers = customers.OrderBy(c => c.birthDate);
+                    break;
+                case "Birth Date_desc":
+                    customers = customers.OrderByDescending(c => c.birthDate);
+                    break;
+                case "Location":
+                    customers = customers.OrderBy(c => c.location);
+                    break;
+                case "Location_desc":
+                    customers = customers.OrderByDescending(c => c.location);
                     break;
                 default:
                     customers = customers.OrderBy(c => c.customerID);

@@ -24,16 +24,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.customerID)
+            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.IdSortParam })
         </th>
         <th>
             @Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.birthDate)
+            @Html.ActionLink("Birth Date", "Index", new { sortOrder = ViewBag.BirthDateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.location)
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.zipCode)
