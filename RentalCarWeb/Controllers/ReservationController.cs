@@ -173,7 +173,7 @@ namespace RentalCarWeb.Controllers
             {
                 int cardID = carService.confirmID("CarID", reservation.carPlate);
                 reservation.carID = cardID;
-                reservation.reservStatsID = 1; //default reservation status, we don't need to enter this in the web form
+                reservation.reservStatsID = 1; //default reservation status will always be OPEN, we don't need to enter it in the create form
                 reservationService.create(reservation);
                 return RedirectToAction("Index");
             }

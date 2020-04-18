@@ -54,7 +54,7 @@ namespace RentalCarWeb.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                customers = customers.Where(c => c.customerID.ToString() == search || c.name.ToString().Contains(search));
+                customers = customers.Where(c => c.customerID.ToString() == search || c.name.Contains(search));
             }       
             return View(customers);
         }

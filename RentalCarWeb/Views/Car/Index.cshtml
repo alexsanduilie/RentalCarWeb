@@ -10,25 +10,35 @@
 @Styles.Render("~/Content/commonStyle.css")
 @Styles.Render("~/Content/errorStyle.css")
 
+<form asp-controller="Car" asp-action="Index" method="get">
+    <p>
+        Search by Manufacturer or Location: <input type="text" name="search">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.plate)
+            @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.IdSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.manufacturer)
+            @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.model)
+            @Html.ActionLink("Manufacturer", "Index", new { sortOrder = ViewBag.ManufacturerSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.price)
+            @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParam })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.location)
+            @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
         </th>
         <th></th>
     </tr>
@@ -36,6 +46,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.carID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.plate)
             </td>
