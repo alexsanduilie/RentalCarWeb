@@ -10,6 +10,7 @@
     @Styles.Render("~/Content/commonStyle.css")
     @Styles.Render("~/Content/errorStyle.css")
     @Styles.Render("~/Content/buttonStyle.css")
+    @Styles.Render("~/Content/bootstrap-datetimepicker.css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -44,6 +45,10 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/moment.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.js")
+    @Scripts.Render("~/Scripts/Site.js")
+
     @RenderSection("scripts", required: false)
 
     <script language="javascript" type="text/javascript">

@@ -1,7 +1,9 @@
 ﻿using RentalCarWeb.Models.Business;
+using RentalCarWeb.Models.Database;
 using RentalCarWeb.Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,11 +13,18 @@ namespace RentalCarWeb.Controllers
     public class CarController : Controller
     {
         CarService carService = CarService.Instance;
-        IEnumerable<Car> cars = new List<Car>();
+        IEnumerable<Models.Database.Car> allCars;
 
         // GET: Car
-        public ActionResult Index(string search, string sortOrder)
+        public ActionResult Index(string search, string sortOrder, string startDate, string EndDate)
         {
+            CarsDataContext cdc = new CarsDataContext();
+
+            IEnumerable<Models.Database.Car>    availableCars = from cars in cdc.Cars
+                                                join reservations in cdc.Reservations on cars.CarID equals reservations.CarID
+                                                where DateTime.Parse(startDate) != reservations.StartDate && DateTime.Parse(EndDate) != reservations.EndDate
+                                                select cars;
+
             ViewBag.IdSortParam = String.IsNullOrEmpty(sortOrder) ? "Car ID_desc" : "";
             ViewBag.PlateSortParam = sortOrder == "Car Plate" ? "Car Plate_desc" : "Car Plate";
             ViewBag.ManufacturerSortParam = sortOrder == "Manufacturer" ? "Manufacturer_desc" : "Manufacturer";
@@ -23,52 +32,59 @@ namespace RentalCarWeb.Controllers
             ViewBag.PriceSortParam = sortOrder == "Price" ? "Price_desc" : "Price";
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
 
-            cars = carService.readAll();
+            allCars = from c in cdc.Cars select c;
+
             switch (sortOrder)
             {
                 case "Car ID_desc":
-                    cars = cars.OrderByDescending(c => c.carID);
+                    allCars = allCars.OrderByDescending(c => c.CarID);
                     break;
                 case "Car Plate":
-                    cars = cars.OrderBy(c => c.plate);
+                    allCars = allCars.OrderBy(c => c.Plate);
                     break;
                 case "Car Plate_desc":
-                    cars = cars.OrderByDescending(c => c.plate);
+                    allCars = allCars.OrderByDescending(c => c.Plate);
                     break;
                 case "Manufacturer":
-                    cars = cars.OrderBy(c => c.manufacturer);
+                    allCars = allCars.OrderBy(c => c.Manufacturer);
                     break;
                 case "Manufacturer_desc":
-                    cars = cars.OrderByDescending(c => c.manufacturer);
+                    allCars = allCars.OrderByDescending(c => c.Manufacturer);
                     break;
                 case "Model":
-                    cars = cars.OrderBy(c => c.model);
+                    allCars = allCars.OrderBy(c => c.Model);
                     break;
                 case "Model_desc":
-                    cars = cars.OrderByDescending(c => c.model);
+                    allCars = allCars.OrderByDescending(c => c.Model);
                     break;
                 case "Price":
-                    cars = cars.OrderBy(c => c.price);
+                    allCars = allCars.OrderBy(c => c.PricePerDay);
                     break;
                 case "Price_desc":
-                    cars = cars.OrderByDescending(c => c.price);
+                    allCars = allCars.OrderByDescending(c => c.PricePerDay);
                     break;
                 case "Location":
-                    cars = cars.OrderBy(c => c.location);
+                    allCars = allCars.OrderBy(c => c.Location);
                     break;
                 case "Location_desc":
-                    cars = cars.OrderByDescending(c => c.location);
+                    allCars = allCars.OrderByDescending(c => c.Location);
                     break;
                 default:
-                    cars = cars.OrderBy(c => c.carID);
+                    allCars = allCars.OrderBy(c => c.CarID);
                     break;
             }
 
             if (!String.IsNullOrEmpty(search))
             {
-                cars = cars.Where(c => c.manufacturer.Contains(search) || c.location.Contains(search));
+                allCars = allCars.Where(c => c.Manufacturer.Contains(search) || c.Manufacturer.Contains(search));
             }
-            return View(cars);
+            if (!String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
+            {
+                allCars = availableCars;
+            }
+            return View(allCars);
+
         }
+
     }
 }

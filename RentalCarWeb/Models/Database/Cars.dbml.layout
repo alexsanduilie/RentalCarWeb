@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Cars">
+  <DataContextMoniker Name="/CarsDataContext" />
+  <nestedChildShapes>
+    <classShape Id="8bdebc80-0618-4f3d-bcfb-2ce2c66041e4" absoluteBounds="0.5, 0.5, 2, 1.9631982421875">
+      <DataClassMoniker Name="/CarsDataContext/Car" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e0d82bcc-6d45-4060-9bae-5e5da2b439ba" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fd391b87-9dab-4e41-b08c-e68cab66d277" absoluteBounds="3.25, 0.5, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/CarsDataContext/Reservation" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7631d542-a50a-4b20-a63d-2014595940c5" absoluteBounds="3.2649999999999997, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.5 : 1.48159912109375); (3.25 : 1.48159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarsDataContext/Car/Car_Reservation" />
+      <nodes>
+        <classShapeMoniker Id="8bdebc80-0618-4f3d-bcfb-2ce2c66041e4" />
+        <classShapeMoniker Id="fd391b87-9dab-4e41-b08c-e68cab66d277" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
