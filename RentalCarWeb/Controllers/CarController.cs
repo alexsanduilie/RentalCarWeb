@@ -20,10 +20,10 @@ namespace RentalCarWeb.Controllers
         {
             CarsDataContext cdc = new CarsDataContext();
 
-            IEnumerable<Models.Database.Car>    availableCars = from cars in cdc.Cars
+            /*IEnumerable<Models.Database.Car>    availableCars = from cars in cdc.Cars
                                                 join reservations in cdc.Reservations on cars.CarID equals reservations.CarID
                                                 where DateTime.Parse(startDate) != reservations.StartDate && DateTime.Parse(EndDate) != reservations.EndDate
-                                                select cars;
+                                                select cars;*/
 
             ViewBag.IdSortParam = String.IsNullOrEmpty(sortOrder) ? "Car ID_desc" : "";
             ViewBag.PlateSortParam = sortOrder == "Car Plate" ? "Car Plate_desc" : "Car Plate";
@@ -78,10 +78,10 @@ namespace RentalCarWeb.Controllers
             {
                 allCars = allCars.Where(c => c.Manufacturer.Contains(search) || c.Manufacturer.Contains(search));
             }
-            if (!String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
+            /*if (!String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
             {
                 allCars = availableCars;
-            }
+            }*/
             return View(allCars);
 
         }

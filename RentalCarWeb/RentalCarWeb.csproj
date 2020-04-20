@@ -125,6 +125,7 @@
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -136,6 +137,11 @@
     <Compile Include="Models\Business\ReservationService.cs" />
     <Compile Include="Models\Business\ReservationStatusesService.cs" />
     <Compile Include="Models\Business\ReservationValidationsService.cs" />
+    <Compile Include="Models\Database\CustomersRevervations.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomersRevervations.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Models\DAO\CarDAO.cs" />
     <Compile Include="Models\DAO\CouponDAO.cs" />
     <Compile Include="Models\DAO\CustomerDAO.cs" />
@@ -149,6 +155,7 @@
     <Compile Include="Models\DTO\Car.cs" />
     <Compile Include="Models\DTO\Coupon.cs" />
     <Compile Include="Models\DTO\Customer.cs" />
+    <Compile Include="Models\DTO\GoldSilverCustomers.cs" />
     <Compile Include="Models\DTO\Reservation.cs" />
     <Compile Include="Models\DTO\ReservationStatuses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -178,6 +185,14 @@
       <LastGenOutput>Cars.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Models\Database\CustomersRevervations.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>CustomersRevervations.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Models\Database\CustomersRevervations.dbml.layout">
+      <DependentUpon>CustomersRevervations.dbml</DependentUpon>
+    </None>
     <None Include="Models\Database\Cars.dbml.layout">
       <DependentUpon>Cars.dbml</DependentUpon>
     </None>
@@ -222,6 +237,7 @@
     <Content Include="Views\Reservation\Create.cshtml" />
     <Content Include="Views\Reservation\Edit.cshtml" />
     <Content Include="Views\Car\Index.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

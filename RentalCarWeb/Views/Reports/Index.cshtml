@@ -1,0 +1,29 @@
+﻿@model IEnumerable<RentalCarWeb.Models.DTO.GoldSilverCustomers>
+
+@{
+    ViewBag.Title = "Gold and Silver Customers which rented a car at least 4 or 3 times in the last 30 days";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.reservationsNr)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.reservationsNr)
+        </td>
+    </tr>
+}
+</table>
