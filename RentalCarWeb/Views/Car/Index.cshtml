@@ -22,9 +22,9 @@
             <div class="control-label col-md-2"><b>Car Model</b></div>
             <input type="text" name="model" class="form-control text-danger"><br>
             <div class="control-label col-md-2"><b>Start Date</b></div>
-            <input type="text" name="startDate" class="form-control datePicker text-danger"><br>
+            <div style="position: relative"><input type="text" name="startDate" class="form-control datePicker text-danger"></div><br>
             <div class="control-label col-md-2"><b>End Date</b></div>
-            <input type="text" name="EndDate" class="form-control datePicker text-danger"><br>
+            <div style="position: relative"><input type="text" name="EndDate" class="form-control datePicker text-danger"></div><br>
             <div class="control-label col-md-2"><b>City</b></div>
             <input type="text" name="city" class="form-control text-danger">
             <br>
@@ -35,59 +35,59 @@
     </form>
 </div>
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.IdSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Manufacturer", "Index", new { sortOrder = ViewBag.ManufacturerSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParam })
+        </th>
+        <th>
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.IdSortParam })
-            </th>
-            <th>
-                @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam })
-            </th>
-            <th>
-                @Html.ActionLink("Manufacturer", "Index", new { sortOrder = ViewBag.ManufacturerSortParam })
-            </th>
-            <th>
-                @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParam })
-            </th>
-            <th>
-                @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParam })
-            </th>
-            <th>
-                @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufacturer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CarID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CarID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CarID })
+            </td>
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CarID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Plate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Manufacturer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PricePerDay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CarID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CarID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CarID })
-                </td>
-            </tr>
-        }
-
-    </table>
+</table>
