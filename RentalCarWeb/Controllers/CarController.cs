@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.EnterpriseServices;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Reservation = RentalCarWeb.Models.DTO.Reservation;
 
 namespace RentalCarWeb.Controllers
 {
@@ -14,9 +16,11 @@ namespace RentalCarWeb.Controllers
     {
         CarService carService = CarService.Instance;
         IEnumerable<Models.Database.Car> allCars;
+        CarValidationsService carValidations = CarValidationsService.Instance;
+        ReservationValidationsService reservationValidations = ReservationValidationsService.Instance;
 
         // GET: Car
-        public ActionResult Index(string search, string sortOrder, string startDate, string EndDate)
+        public ActionResult Index(string plate, string model, string city, string sortOrder, string startDate, string EndDate)
         {
             CarsDataContext cdc = new CarsDataContext();
 
@@ -74,16 +78,90 @@ namespace RentalCarWeb.Controllers
                     break;
             }
 
-            if (!String.IsNullOrEmpty(search))
+            Reservation r = null;
+            if (!String.IsNullOrEmpty(model) && String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city))
             {
-                allCars = allCars.Where(c => c.Manufacturer.Contains(search) || c.Manufacturer.Contains(search));
+                if (!carValidations.validateCarModel(model))
+                {
+                    ViewBag.Message = "This model does not exist, please enter another model";
+                }
+                else
+                {
+                    allCars = allCars.Where(c => c.Model.Equals(model));
+                    return View(allCars);
+                }
             }
-            /*if (!String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
+            else if (String.IsNullOrEmpty(model) && String.IsNullOrEmpty(plate) && !String.IsNullOrEmpty(city))
             {
-                allCars = availableCars;
-            }*/
+                if (!carValidations.validateCity(city))
+                {
+                    ViewBag.Message = "This location does not exist, please enter another location";
+                }
+                else
+                {
+                    allCars = allCars.Where(c => c.Location.Equals(city));
+                    return View(allCars);
+                }
+            }
+            else if (String.IsNullOrEmpty(model) && !String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && String.IsNullOrEmpty(startDate) && String.IsNullOrEmpty(EndDate))
+            {
+                if (!carValidations.validateCarPlate(plate))
+                {
+                    if (!Regex.IsMatch(plate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
+                    {
+                        ViewBag.Message = "Invalid input type, the car plate format should be: ZZ 00 ZZZ";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "This car plate does not exist, please enter another plate";
+                    }
+                }
+                else
+                {
+                    allCars = allCars.Where(c => c.Plate.Equals(plate));
+                    return View(allCars);
+                }
+            }
+            else if (String.IsNullOrEmpty(model) && !String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
+            {
+                if (!carValidations.validateCarPlate(plate))
+                {
+                    if (!Regex.IsMatch(plate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
+                    {
+                        ViewBag.Message = "Invalid input type, the car plate format should be: ZZ 00 ZZZ";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "This car plate does not exist, please enter another plate";
+                    }
+                }
+                else
+                {
+                    allCars = allCars.Where(c => c.Plate.Equals(plate));
+                    if (!reservationValidations.validateDate(DateTime.Parse(startDate), DateTime.Parse(EndDate)))
+                    {
+                        ViewBag.Message = "End Date should be equal or higher than Start Date";
+                    }
+                    else if (!reservationValidations.validateRentPeriod(allCars.FirstOrDefault().Plate, DateTime.Parse(startDate), DateTime.Parse(EndDate), "INSERT", r))
+                    {
+                        ViewBag.Message = "The selected car was already rented in this period";
+                    }
+                    else
+                    {
+                        return View(allCars);
+                    }
+                }
+            }
+            else if (String.IsNullOrEmpty(model) && String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && String.IsNullOrEmpty(startDate) && String.IsNullOrEmpty(EndDate))
+            {
+                return View(allCars);
+            }
+            else
+            {
+                ViewBag.Message = (" Each search field is independent, and ONLY the Car Plate is linked to the Start/End Dates;\n" +
+                                    " You can search only by a single criteria, or by Car Plate and Start/End Dates, or leave all criterias blank for returning all cars;\n");
+            }
             return View(allCars);
-
         }
 
     }

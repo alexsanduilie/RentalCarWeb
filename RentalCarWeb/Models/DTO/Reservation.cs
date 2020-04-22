@@ -58,5 +58,16 @@ namespace RentalCarWeb.Models.DTO
         {
             return String.Format("Car ID:{0}, Car Plate:{1}, Costumer ID:{2}, Reservation Status:{3}, Start Date:{4}, End Date:{5}, Location:{6}, Coupon Code:{7}", carID, carPlate, costumerID, reservStatsID, startDate, endDate, location, couponCode);
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Reservation;
+            if (other == null)
+                return false;
+            if (carID != other.carID || carPlate != other.carPlate || costumerID != other.costumerID || reservStatsID != other.reservStatsID || startDate != other.startDate || endDate != other.endDate || location != other.location || couponCode != other.couponCode)
+                return false;
+
+            return true;
+        }
     }
 }

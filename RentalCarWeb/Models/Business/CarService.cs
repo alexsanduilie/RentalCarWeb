@@ -42,6 +42,19 @@ namespace RentalCarWeb.Models.Business
             }
         }
 
+        public int confirmOverallLocation(string column, string paramValue)
+        {
+            try
+            {
+                return carDAO.confirmOverallLocation(column, paramValue);
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Error getting location: " + ex.Message);
+                return 0;
+            }
+        }
+
         public DataTable readAllInDataTable()
         {
             try

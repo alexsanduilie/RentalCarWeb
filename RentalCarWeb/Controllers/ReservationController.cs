@@ -128,6 +128,7 @@ namespace RentalCarWeb.Controllers
         public ActionResult Create(Reservation reservation)
         {
             List<SelectListItem> couponCodes = new List<SelectListItem>();
+            Reservation r = null;
             coupons = couponService.readAll();
             foreach (Coupon c in coupons)
             {
@@ -163,7 +164,7 @@ namespace RentalCarWeb.Controllers
                 ViewData["ListCoupon"] = couponCodes;
                 return View(reservation);
             }
-            else if (!reservationValidations.validateRentPeriod(reservation.carPlate, reservation.startDate, reservation.endDate, "INSERT"))
+            else if (!reservationValidations.validateRentPeriod(reservation.carPlate, reservation.startDate, reservation.endDate, "INSERT", r))
             {
                 ViewBag.Message = "The selected car was already rented in this period";
                 ViewData["ListCoupon"] = couponCodes;
@@ -278,7 +279,7 @@ namespace RentalCarWeb.Controllers
                     ViewData["ViewBag.SelectList"] = reservationStatuses;
                     return View(reservation);
                 }
-                else if (!reservationValidations.validateRentPeriod(reservation.carPlate, reservation.startDate, reservation.endDate, "UPDATE"))
+                else if (!reservationValidations.validateRentPeriod(reservation.carPlate, reservation.startDate, reservation.endDate, "UPDATE", reservationToEdit))
                 {
                     ViewBag.Message = "The selected car was already rented in this period";
                     ViewData["ListCoupon"] = couponCodes;

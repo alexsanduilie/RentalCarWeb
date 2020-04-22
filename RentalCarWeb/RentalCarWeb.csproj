@@ -131,6 +131,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Business\CarService.cs" />
+    <Compile Include="Models\Business\CarValidationsService.cs" />
     <Compile Include="Models\Business\CouponService.cs" />
     <Compile Include="Models\Business\CustomerService.cs" />
     <Compile Include="Models\Business\CustomerValidationsService.cs" />

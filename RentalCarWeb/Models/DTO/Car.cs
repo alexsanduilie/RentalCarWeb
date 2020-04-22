@@ -48,6 +48,8 @@ namespace RentalCarWeb.Models.DTO
             this.location = location;
         }
 
+        public Car() { }
+
         public override string ToString()
         {
             return String.Format("Car ID:{0}, Car Plate:{1}, Manufacturare:{2}, Model:{3}, Price:{4}, Location:{5}", carID, plate, manufacturer, model, price, location);
