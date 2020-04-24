@@ -125,7 +125,9 @@
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\ReportsCarsController.cs" />
+    <Compile Include="Controllers\ReportsCustomersController.cs" />
+    <Compile Include="Controllers\ReportsRencentCarsController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -147,16 +149,12 @@
     <Compile Include="Models\DAO\CouponDAO.cs" />
     <Compile Include="Models\DAO\CustomerDAO.cs" />
     <Compile Include="Models\DAO\ReservationDAO.cs" />
-    <Compile Include="Models\Database\Cars.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Cars.dbml</DependentUpon>
-    </Compile>
     <Compile Include="Models\Database\InitializeDb.cs" />
     <Compile Include="Models\DTO\Car.cs" />
     <Compile Include="Models\DTO\Coupon.cs" />
     <Compile Include="Models\DTO\Customer.cs" />
     <Compile Include="Models\DTO\GoldSilverCustomers.cs" />
+    <Compile Include="Models\DTO\NrCarReserv.cs" />
     <Compile Include="Models\DTO\Reservation.cs" />
     <Compile Include="Models\DTO\ReservationStatuses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -181,11 +179,6 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Models\Database\Cars.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Cars.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Models\Database\CustomersRevervations.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>CustomersRevervations.designer.cs</LastGenOutput>
@@ -193,9 +186,6 @@
     </Content>
     <None Include="Models\Database\CustomersRevervations.dbml.layout">
       <DependentUpon>CustomersRevervations.dbml</DependentUpon>
-    </None>
-    <None Include="Models\Database\Cars.dbml.layout">
-      <DependentUpon>Cars.dbml</DependentUpon>
     </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -238,7 +228,10 @@
     <Content Include="Views\Reservation\Create.cshtml" />
     <Content Include="Views\Reservation\Edit.cshtml" />
     <Content Include="Views\Car\Index.cshtml" />
-    <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\ReportsCustomers\Index.cshtml" />
+    <Content Include="Views\ReportsRencentCars\Index.cshtml" />
+    <Content Include="Views\ReportsCars\Index.cshtml" />
+    <Content Include="Views\ReportsCustomers\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

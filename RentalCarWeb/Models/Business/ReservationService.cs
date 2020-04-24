@@ -35,9 +35,10 @@ namespace RentalCarWeb.Models.Business
             {
                 reservationDAO.create(reservation);
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error inserting customer: " + ex.Message);
+                throw;
+                //MessageBox.Show("Error inserting customer: " + ex.Message);
             }
         }
 

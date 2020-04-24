@@ -2,6 +2,7 @@
 using RentalCarWeb.Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -175,7 +176,16 @@ namespace RentalCarWeb.Controllers
                 int cardID = carService.confirmID("CarID", reservation.carPlate);
                 reservation.carID = cardID;
                 reservation.reservStatsID = 1; //default reservation status will always be OPEN, we don't need to enter it in the create form
-                reservationService.create(reservation);
+                try
+                {
+                    reservationService.create(reservation);
+                }catch(SqlException ex)
+                {
+                    ViewBag.Message = "SQL error: " + ex.Message;
+                    ViewData["ListCoupon"] = couponCodes;
+                    return View(reservation);
+                }
+                
                 return RedirectToAction("Index");
             }
 

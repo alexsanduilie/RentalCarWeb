@@ -22,12 +22,7 @@ namespace RentalCarWeb.Controllers
         // GET: Car
         public ActionResult Index(string plate, string model, string city, string sortOrder, string startDate, string EndDate)
         {
-            CarsDataContext cdc = new CarsDataContext();
-
-            /*IEnumerable<Models.Database.Car>    availableCars = from cars in cdc.Cars
-                                                join reservations in cdc.Reservations on cars.CarID equals reservations.CarID
-                                                where DateTime.Parse(startDate) != reservations.StartDate && DateTime.Parse(EndDate) != reservations.EndDate
-                                                select cars;*/
+            CustomersRevervationsDataContext crdc = new CustomersRevervationsDataContext();
 
             ViewBag.IdSortParam = String.IsNullOrEmpty(sortOrder) ? "Car ID_desc" : "";
             ViewBag.PlateSortParam = sortOrder == "Car Plate" ? "Car Plate_desc" : "Car Plate";
@@ -36,7 +31,7 @@ namespace RentalCarWeb.Controllers
             ViewBag.PriceSortParam = sortOrder == "Price" ? "Price_desc" : "Price";
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
 
-            allCars = from c in cdc.Cars select c;
+            allCars = from c in crdc.Cars select c;
 
             switch (sortOrder)
             {

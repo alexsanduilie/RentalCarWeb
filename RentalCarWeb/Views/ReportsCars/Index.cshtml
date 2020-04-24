@@ -1,0 +1,80 @@
+﻿@model IEnumerable<RentalCarWeb.Models.DTO.NrCarReserv>
+
+@{
+    ViewBag.Title = "Most or Less rented cars in a given period --> TOP 5 Cars will be returned";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="form-horizontal">
+    <h4>Please enter your search criteria</h4>
+    <h4 class="error">@ViewBag.Message</h4>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <form asp-controller="NrCarReserv" asp-action="Index" method="get">
+        <p>
+            <div class="control-label col-md-2"><b>Start Date</b></div>
+            <div style="position: relative"><input type="text" name="startDate" class="form-control datePicker text-danger"></div><br>
+            <div class="control-label col-md-2"><b>End Date</b></div>
+            <div style="position: relative"><input type="text" name="endDate" class="form-control datePicker text-danger"></div><br>
+            <div class="control-label col-md-2"><b>Criteria</b></div>
+            <select id="SelectList" class="form-control text-danger" name="condition">
+                <option value="MOST">MOST</option >
+                <option value="LESS">LESS</option>
+            </select><br>
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default"/>
+            </div>
+        </p>
+    </form>
+</div>
+<br><br>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.plate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.manufacturer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.reservNr)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.plate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.manufacturer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.reservNr)
+        </td>
+    </tr>
+}
+
+</table>
+<div>
+    @Html.ActionLink("Back to Reports Menu", "Menu", "ReportsCustomers")
+</div>

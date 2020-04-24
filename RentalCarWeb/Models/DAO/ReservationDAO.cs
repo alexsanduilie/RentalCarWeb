@@ -56,9 +56,10 @@ namespace RentalCarWeb.Models.DAO
                     cmd.Dispose();
                     //MessageBox.Show("Reservation created successfully");
                 }
-                catch (SqlException ex)
+                catch (SqlException)
                 {
-                    MessageBox.Show("SQL error: " + ex.Message);
+                    throw;
+                    //MessageBox.Show("SQL error: " + ex.Message);
                 }
             }
 

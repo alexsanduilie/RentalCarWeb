@@ -36,6 +36,9 @@ namespace RentalCarWeb.Models.Database
     partial void InsertReservation(Reservation instance);
     partial void UpdateReservation(Reservation instance);
     partial void DeleteReservation(Reservation instance);
+    partial void InsertCar(Car instance);
+    partial void UpdateCar(Car instance);
+    partial void DeleteCar(Car instance);
     #endregion
 		
 		public CustomersRevervationsDataContext() : 
@@ -81,6 +84,14 @@ namespace RentalCarWeb.Models.Database
 			get
 			{
 				return this.GetTable<Reservation>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Car> Cars
+		{
+			get
+			{
+				return this.GetTable<Car>();
 			}
 		}
 	}
@@ -295,6 +306,8 @@ namespace RentalCarWeb.Models.Database
 		
 		private EntityRef<Customer> _Customer;
 		
+		private EntityRef<Car> _Car;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -320,6 +333,7 @@ namespace RentalCarWeb.Models.Database
 		public Reservation()
 		{
 			this._Customer = default(EntityRef<Customer>);
+			this._Car = default(EntityRef<Car>);
 			OnCreated();
 		}
 		
@@ -334,6 +348,10 @@ namespace RentalCarWeb.Models.Database
 			{
 				if ((this._CarID != value))
 				{
+					if (this._Car.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnCarIDChanging(value);
 					this.SendPropertyChanging();
 					this._CarID = value;
@@ -521,6 +539,40 @@ namespace RentalCarWeb.Models.Database
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Car_Reservation", Storage="_Car", ThisKey="CarID", OtherKey="CarID", IsForeignKey=true)]
+		public Car Car
+		{
+			get
+			{
+				return this._Car.Entity;
+			}
+			set
+			{
+				Car previousValue = this._Car.Entity;
+				if (((previousValue != value) 
+							|| (this._Car.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Car.Entity = null;
+						previousValue.Reservations.Remove(this);
+					}
+					this._Car.Entity = value;
+					if ((value != null))
+					{
+						value.Reservations.Add(this);
+						this._CarID = value.CarID;
+					}
+					else
+					{
+						this._CarID = default(int);
+					}
+					this.SendPropertyChanged("Car");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -539,6 +591,216 @@ namespace RentalCarWeb.Models.Database
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Cars")]
+	public partial class Car : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CarID;
+		
+		private string _Plate;
+		
+		private string _Manufacturer;
+		
+		private string _Model;
+		
+		private decimal _PricePerDay;
+		
+		private string _Location;
+		
+		private EntitySet<Reservation> _Reservations;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCarIDChanging(int value);
+    partial void OnCarIDChanged();
+    partial void OnPlateChanging(string value);
+    partial void OnPlateChanged();
+    partial void OnManufacturerChanging(string value);
+    partial void OnManufacturerChanged();
+    partial void OnModelChanging(string value);
+    partial void OnModelChanged();
+    partial void OnPricePerDayChanging(decimal value);
+    partial void OnPricePerDayChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
+    #endregion
+		
+		public Car()
+		{
+			this._Reservations = new EntitySet<Reservation>(new Action<Reservation>(this.attach_Reservations), new Action<Reservation>(this.detach_Reservations));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CarID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int CarID
+		{
+			get
+			{
+				return this._CarID;
+			}
+			set
+			{
+				if ((this._CarID != value))
+				{
+					this.OnCarIDChanging(value);
+					this.SendPropertyChanging();
+					this._CarID = value;
+					this.SendPropertyChanged("CarID");
+					this.OnCarIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Plate", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Plate
+		{
+			get
+			{
+				return this._Plate;
+			}
+			set
+			{
+				if ((this._Plate != value))
+				{
+					this.OnPlateChanging(value);
+					this.SendPropertyChanging();
+					this._Plate = value;
+					this.SendPropertyChanged("Plate");
+					this.OnPlateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Manufacturer", DbType="VarChar(30) NOT NULL", CanBeNull=false)]
+		public string Manufacturer
+		{
+			get
+			{
+				return this._Manufacturer;
+			}
+			set
+			{
+				if ((this._Manufacturer != value))
+				{
+					this.OnManufacturerChanging(value);
+					this.SendPropertyChanging();
+					this._Manufacturer = value;
+					this.SendPropertyChanged("Manufacturer");
+					this.OnManufacturerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Model", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Model
+		{
+			get
+			{
+				return this._Model;
+			}
+			set
+			{
+				if ((this._Model != value))
+				{
+					this.OnModelChanging(value);
+					this.SendPropertyChanging();
+					this._Model = value;
+					this.SendPropertyChanged("Model");
+					this.OnModelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PricePerDay", DbType="Money NOT NULL")]
+		public decimal PricePerDay
+		{
+			get
+			{
+				return this._PricePerDay;
+			}
+			set
+			{
+				if ((this._PricePerDay != value))
+				{
+					this.OnPricePerDayChanging(value);
+					this.SendPropertyChanging();
+					this._PricePerDay = value;
+					this.SendPropertyChanged("PricePerDay");
+					this.OnPricePerDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Location
+		{
+			get
+			{
+				return this._Location;
+			}
+			set
+			{
+				if ((this._Location != value))
+				{
+					this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Car_Reservation", Storage="_Reservations", ThisKey="CarID", OtherKey="CarID")]
+		public EntitySet<Reservation> Reservations
+		{
+			get
+			{
+				return this._Reservations;
+			}
+			set
+			{
+				this._Reservations.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Reservations(Reservation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Car = this;
+		}
+		
+		private void detach_Reservations(Reservation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Car = null;
 		}
 	}
 }

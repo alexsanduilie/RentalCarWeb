@@ -1,0 +1,57 @@
+﻿@model IEnumerable<RentalCarWeb.Models.DTO.Reservation>
+
+@{
+    ViewBag.Title = "Most Recent Rented Cars --> Latest Week";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.carPlate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.costumerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.startDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.endDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.couponCode)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.carPlate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.costumerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.startDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.endDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.couponCode)
+        </td>
+    </tr>
+}
+
+</table>
+<div>
+    @Html.ActionLink("Back to Reports Menu", "Menu", "ReportsCustomers")
+</div>
