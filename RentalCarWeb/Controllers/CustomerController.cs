@@ -23,6 +23,7 @@ namespace RentalCarWeb.Controllers
             ViewBag.NameSortParam = sortOrder == "Customer Name" ? "Customer Name_desc" : "Customer Name";
             ViewBag.BirthDateSortParam = sortOrder == "Birth Date" ? "Birth Date_desc" : "Birth Date";
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
+
             try
             {
                 customers = customerService.readAll();
@@ -62,7 +63,7 @@ namespace RentalCarWeb.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                customers = customers.Where(c => c.customerID.ToString() == search.Trim() || c.name.Contains(search.Trim()));
+                customers = customers.Where(c => c.customerID.ToString() == search.Trim() || c.name.ToLower().Contains(search.Trim().ToLower()));
             }
             return View(customers);
         }

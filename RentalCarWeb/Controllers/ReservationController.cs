@@ -96,7 +96,7 @@ namespace RentalCarWeb.Controllers
 
             if (!String.IsNullOrEmpty(carPlate))
             {
-                reservations = reservations.Where(r => r.carPlate.Contains(carPlate.Trim()));
+                reservations = reservations.Where(r => r.carPlate.ToLower().Contains(carPlate.Trim().ToLower()));
             }
             else if (!String.IsNullOrEmpty(status))
             {

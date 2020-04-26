@@ -18,6 +18,7 @@ namespace RentalCarWeb.Models.DTO
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Birth Date")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime birthDate { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid input type, the name should contain only alphabetic characters")]

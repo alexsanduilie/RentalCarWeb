@@ -32,7 +32,7 @@ namespace RentalCarWeb.Controllers
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
 
             //USING LINQ
-            allCars = from c in crdc.Cars select c;
+            allCars = from c in crdc.Cars select c;           
 
             switch (sortOrder)
             {
@@ -84,7 +84,7 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Model.Equals(model.Trim()));
+                    allCars = allCars.Where(c => c.Model.ToLower().Equals(model.Trim().ToLower()));
                     return View(allCars);
                 }
             }
@@ -96,7 +96,7 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Location.Equals(city.Trim()));
+                    allCars = allCars.Where(c => c.Location.ToLower().Equals(city.Trim().ToLower()));
                     return View(allCars);
                 }
             }
@@ -115,13 +115,13 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Plate.Equals(plate.Trim()));
+                    allCars = allCars.Where(c => c.Plate.ToLower().Equals(plate.Trim().ToLower()));
                     return View(allCars);
                 }
             }
             else if (String.IsNullOrEmpty(model) && !String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
             {
-                if (!carValidations.validateCarPlate(plate.Trim()))
+                if (!carValidations.validateCarPlate(plate.Trim().ToLower()))
                 {
                     if (!Regex.IsMatch(plate.Trim(), "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
                     {
@@ -134,7 +134,7 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Plate.Equals(plate.Trim()));
+                    allCars = allCars.Where(c => c.Plate.ToLower().Equals(plate.Trim().ToLower()));
                     if (!reservationValidations.validateDate(DateTime.Parse(startDate), DateTime.Parse(EndDate)))
                     {
                         ViewBag.Message = "End Date should be equal or higher than Start Date";
