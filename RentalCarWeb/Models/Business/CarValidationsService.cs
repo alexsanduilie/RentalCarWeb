@@ -27,21 +27,7 @@ namespace RentalCarWeb.Models.Business
             }
         }
 
-        private static CarDAO carDAO = CarDAO.Instance;
         private static CarService carService = CarService.Instance;
-        private static CustomerService customerService = CustomerService.Instance;
-        public List<Car> searchCars(string plate, string model, string city, DateTime presentStartDate, DateTime presentEndDate)
-        {
-            try
-            {
-                return carDAO.searchCars(plate, model, city, presentStartDate, presentEndDate);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error searching reservation: " + ex.Message);
-                return null;
-            }
-        }
 
         public bool validateCarPlate(string carPlate)
         {
@@ -53,12 +39,10 @@ namespace RentalCarWeb.Models.Business
                 {
                     if (!Regex.IsMatch(carPlate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
                     {
-                        //message = "Invalid input type, the car plate format should be: ZZ 00 ZZZ";
                         plate = false;
                     }
                     else
                     {
-                        //message = "The requested car does not exist, please enter another car plate!";
                         plate = false;
                     }
                 }
@@ -74,7 +58,6 @@ namespace RentalCarWeb.Models.Business
                 int model = carService.confirmID("Model", carModel);
                 if (model == 0)
                 {
-                    //message.Text = "This model does not exist, please enter another model!";
                     cl = false;
                 }
             }
@@ -89,7 +72,6 @@ namespace RentalCarWeb.Models.Business
                 int location = carService.confirmOverallLocation("Location", city);
                 if (location == 0)
                 {
-                    //message.Text = "This location does not exist, please enter another location!";
                     cl = false;
                 }
             }

@@ -37,7 +37,6 @@ namespace RentalCarWeb.Models.Business
             bool plate = true;
             if (String.IsNullOrEmpty(carPlate))
             {
-                //message.Text = "Car Plate field can not be empty!";
                 plate = false;
             }
             else
@@ -47,19 +46,12 @@ namespace RentalCarWeb.Models.Business
                 {
                     if (!Regex.IsMatch(carPlate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
                     {
-                        //message.Text = "Invalid input type, the car plate format should be: ZZ 00 ZZZ";
                         plate = false;
                     }
                     else
                     {
-                        //message.Text = "The requested car does not exist, please enter another car plate!";
                         plate = false;
                     }
-
-                }
-                else
-                {
-                    //message.Text = "";
                 }
             }
             return plate;
@@ -70,12 +62,10 @@ namespace RentalCarWeb.Models.Business
             bool cl = true;
             if (String.IsNullOrEmpty(clientID))
             {
-                //message.Text = "Client field can not be empty!";
                 cl = false;
             }
-            else if (!Regex.IsMatch(clientID, "[0-9]") && !String.IsNullOrEmpty(clientID))
+            else if (!Regex.IsMatch(clientID, "^[0-9]+$") && !String.IsNullOrEmpty(clientID))
             {
-                //message.Text = "Invalid input type, the client ID format should be a number";
                 cl = false;
             }
             else
@@ -83,14 +73,8 @@ namespace RentalCarWeb.Models.Business
                 int client = customerService.confirmID(clientID);
                 if (client == 0)
                 {
-                    //message.Text = "This client does not exist, please enter another client!";
                     cl = false;
                 }
-                else
-                {
-                    //message.Text = "";
-                }
-
             }
             return cl;
         }
@@ -100,7 +84,10 @@ namespace RentalCarWeb.Models.Business
             bool client = true;
             if (String.IsNullOrEmpty(loc))
             {
-                //message.Text = "City field can not be empty!";
+                client = false;
+            }
+            else if (!Regex.IsMatch(loc, "^[a-zA-Z\\s]+$") && !String.IsNullOrEmpty(loc))
+            {
                 client = false;
             }
             else
@@ -109,12 +96,7 @@ namespace RentalCarWeb.Models.Business
                 string location = carDAO.location;
                 if (city == 0 || !location.Equals(loc))
                 {
-                    //message.Text = "The selected car is not available in this city!";
                     client = false;
-                }
-                else
-                {
-                    //message.Text = "";
                 }
             }
             return client;
@@ -125,12 +107,7 @@ namespace RentalCarWeb.Models.Business
             bool date = true;
             if (startDate > endDate)
             {
-                //message.Text = "End Date should be equal or higher than Start Date!";
                 date = false;
-            }
-            else
-            {
-                //message.Text = "";
             }
             return date;
         }
@@ -164,12 +141,7 @@ namespace RentalCarWeb.Models.Business
                 if (((presentStartDate <= endDate && presentEndDate >= startDate) && condition == "INSERT" && rStatus == 1) || (((presentStartDate <= endDate && presentEndDate >= startDate) && !reservation.Equals(dbR)) && condition == "UPDATE" && rStatus == 1))
                 {
                     selectedDate = false;
-                    //message.Text = "The selected car was already rented in this period!";
                     break;
-                }
-                else
-                {
-                    //message.Text = "";
                 }
             }
             return selectedDate;

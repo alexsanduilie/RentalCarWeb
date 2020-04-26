@@ -30,7 +30,6 @@ namespace RentalCarWeb.Models.DAO
         }
 
         private static string table_Name = "Customers";
-        private static int searchCounter = 0;
 
         public void create(Customer customer)
         {
@@ -47,19 +46,18 @@ namespace RentalCarWeb.Models.DAO
                     cmd.Parameters.AddWithValue("@ZIP", customer.zipCode);
 
                     dataAdapter.InsertCommand = cmd;
-                    dataAdapter.InsertCommand.ExecuteNonQuery();
-
+                    dataAdapter.InsertCommand.ExecuteNonQuery();                   
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    //MessageBox.Show("Customer created successfully");
-                }
-                catch (SqlException ex)
-                {
-                    //MessageBox.Show("SQL error: " + ex.Message);
-                    throw new Exception(ex.Message);
                 }
             }
-
         }
 
         public void update(Customer customer)
@@ -79,119 +77,17 @@ namespace RentalCarWeb.Models.DAO
 
                     dataAdapter.UpdateCommand = cmd;
                     dataAdapter.UpdateCommand.ExecuteNonQuery();
-
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+                finally
+                {
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    //MessageBox.Show("Customer updated successfully");
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
                 }
             }
-
-        }
-
-        public Customer search(string customerID, string Name)
-        {
-            string searchSQL;
-            Customer customer = null;
-
-            if (Name == "")
-            {
-                searchSQL = "SELECT * FROM Customers WHERE CostumerID = @CostumerID;";
-            }
-            else
-            {
-                searchSQL = "SELECT * FROM Customers WHERE CostumerID = @CostumerID OR Name LIKE '%" + Name + "%';";
-            }
-
-            using (SqlCommand cmd = new SqlCommand(searchSQL, MvcApplication.conn))
-            {
-                try
-                {
-                    cmd.Parameters.AddWithValue("@CostumerID", customerID);
-                    cmd.Parameters.AddWithValue("@Name", Name);
-                    SqlDataReader dr = cmd.ExecuteReader();
-
-                    List<Customer> cust = new List<Customer>();
-                    int counter = 0;
-                    var message = "";
-                    while (dr.Read())
-                    {
-                        customer = new Customer();
-                        customer.customerID = Int32.Parse(dr["CostumerID"].ToString());
-                        customer.name = dr["Name"].ToString();
-                        customer.birthDate = DateTime.Parse(dr["BirthDate"].ToString());
-                        customer.location = dr["Location"].ToString();
-                        customer.zipCode = Int32.Parse(dr["ZIPCode"].ToString());
-
-                        cust.Add(customer);
-                        counter++;
-                        searchCounter++;
-
-                    }
-                    message = string.Join(Environment.NewLine, cust);
-
-                    if (counter == 1)
-                    {
-                        if (searchCounter == 1)
-                        {
-                            MessageBox.Show("Records retrieved successfully\n\n" + message);
-                        }
-                        dr.Close();
-                        cmd.Parameters.Clear();
-                        cmd.Dispose();
-                        return customer;
-
-                    }
-                    else if (counter > 1)
-                    {
-
-                        MessageBox.Show("Multimple Names found:\n\n" + message + "\n\n" + "Please enter the full name for finalizing your search!");
-                        dr.Close();
-                    }
-
-                    dr.Close();
-                    cmd.Parameters.Clear();
-                    cmd.Dispose();
-                    return null;
-
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return null;
-                }
-            }
-
-        }
-
-        public int getMaxID(string customerID)
-        {
-            string getID = "SELECT MAX(" + customerID + ") FROM " + table_Name + ";";
-            int no = 0;
-            using (SqlCommand cmd = new SqlCommand(getID, MvcApplication.conn))
-            {
-                try
-                {
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        no = dr.GetInt32(no) + 1;
-                    }
-                    dr.Close();
-                    cmd.Parameters.Clear();
-                    cmd.Dispose();
-                    return no;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return no;
-                }
-            }
-
         }
 
         public int confirmID(string paramValue)
@@ -201,23 +97,27 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(getID, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
                     cmd.Parameters.AddWithValue("@CustomerID", paramValue);
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    dr = cmd.ExecuteReader();
                     if (dr.Read())
                     {
                         no = dr.GetInt32(no);
-                    }
+                    } 
+                    return no;
+                }
+                catch (SqlException)
+                {
+                    return no;
+                    throw;                   
+                }
+                finally
+                {
                     dr.Close();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    return no;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return no;
                 }
             }
 
@@ -230,53 +130,29 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(readSQL, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
-                    SqlDataReader dr = cmd.ExecuteReader();
-
+                    dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
                         customers.Add(new Customer(Int32.Parse(dr["CostumerID"].ToString()), dr["Name"].ToString(), DateTime.Parse(dr["BirthDate"].ToString()), dr["Location"].ToString(), Int32.Parse(dr["ZIPCode"].ToString())));
                     }
-
+                    return customers;
+                }
+                catch (SqlException)
+                {
+                    return customers;
+                    throw;
+                }
+                finally
+                {
                     dr.Close();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    return customers;
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return customers;
                 }
             }
-
         }
 
-        public DataTable readAllInDataTable()
-        {
-            string readSQL = "SELECT * FROM " + table_Name;
-            SqlDataAdapter dataAdapter;
-            DataTable dt = new DataTable();
-
-            using (SqlCommand cmd = new SqlCommand(readSQL, MvcApplication.conn))
-            {
-                try
-                {
-                    dataAdapter = new SqlDataAdapter(cmd);
-                    dataAdapter.Fill(dt);
-
-                    cmd.Parameters.Clear();
-                    cmd.Dispose();
-                    return dt;
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return dt;
-                }
-            }
-
-        }
     }
 }

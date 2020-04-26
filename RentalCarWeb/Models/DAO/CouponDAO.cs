@@ -37,24 +37,26 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(readSQL, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
-                    SqlDataReader dr = cmd.ExecuteReader();
-
+                    dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
                         coupons.Add(new Coupon(dr["CouponCode"].ToString(), dr["Description"].ToString(), Double.Parse(dr["Discount"].ToString())));
                     }
-
+                    return coupons;
+                }
+                catch (SqlException)
+                {
+                    return coupons;
+                    throw;                  
+                }
+                finally
+                {
                     dr.Close();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    return coupons;
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return coupons;
                 }
             }
 

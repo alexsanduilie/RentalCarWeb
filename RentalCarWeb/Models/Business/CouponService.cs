@@ -36,10 +36,10 @@ namespace RentalCarWeb.Models.Business
                 coupons = couponDAO.readAll();
                 return coupons;
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error getting records: " + ex.Message);
                 return coupons;
+                throw;   
             }
         }
     }

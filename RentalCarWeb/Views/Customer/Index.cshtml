@@ -5,16 +5,16 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-@Styles.Render("~/Content/tableStyle.css")
-@Styles.Render("~/Content/commonStyle.css")
-@Styles.Render("~/Content/buttonStyle.css")
+<br>
+<h4 class="error">@ViewBag.Message</h4>
 
 <form asp-controller="Customer" asp-action="Index" method="get">
     <p>
-        Search by ID or Name: <input type="text" name="search">
-        <input type="submit" value="Filter" />
-        <input type="reset" value="Reset" />
+        <div class="control-label col-md-2"><b>Search by ID or Name:</b></div>
+        <input type="text" name="search" class="form-control text-danger"><br>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
     </p>
 </form>
 
@@ -61,8 +61,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.customerID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.customerID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.customerID })
+                @Html.ActionLink("Details", "Details", new { id = item.customerID })
             </td>
         </tr>
     }

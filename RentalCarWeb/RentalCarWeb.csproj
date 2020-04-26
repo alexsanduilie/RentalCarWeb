@@ -136,7 +136,6 @@
     <Compile Include="Models\Business\CarValidationsService.cs" />
     <Compile Include="Models\Business\CouponService.cs" />
     <Compile Include="Models\Business\CustomerService.cs" />
-    <Compile Include="Models\Business\CustomerValidationsService.cs" />
     <Compile Include="Models\Business\ReservationService.cs" />
     <Compile Include="Models\Business\ReservationStatusesService.cs" />
     <Compile Include="Models\Business\ReservationValidationsService.cs" />
@@ -213,10 +212,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Menu.cshtml" />
     <Content Include="Views\Shared\_MyLayout.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />

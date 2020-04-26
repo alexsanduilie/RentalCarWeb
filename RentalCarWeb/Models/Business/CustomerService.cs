@@ -35,9 +35,9 @@ namespace RentalCarWeb.Models.Business
             {
                 customerDAO.create(customer);
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error inserting customer: " + ex.Message);
+                throw;
             }
         }
 
@@ -47,35 +47,9 @@ namespace RentalCarWeb.Models.Business
             {
                 customerDAO.update(customer);
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error updating customer: " + ex.Message);
-            }
-        }
-
-        public Customer search(string customerID, string Name)
-        {
-            try
-            {
-                return customerDAO.search(customerID, Name);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error updating customer: " + ex.Message);
-                return null;
-            }
-        }
-
-        public int getMaxID(string customerID)
-        {
-            try
-            {
-                return customerDAO.getMaxID(customerID);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error getting customer ID: " + ex.Message);
-                return 0;
+                throw;
             }
         }
 
@@ -85,10 +59,10 @@ namespace RentalCarWeb.Models.Business
             {
                 return customerDAO.confirmID(paramValue);
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error getting customer ID: " + ex.Message);
                 return 0;
+                throw;                
             }
         }
 
@@ -100,24 +74,12 @@ namespace RentalCarWeb.Models.Business
                 customers = customerDAO.readAll();
                 return customers;
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error getting records: " + ex.Message);
                 return customers;
+                throw;               
             }
         }
 
-        public DataTable readAllInDataTable()
-        {
-            try
-            {
-                return customerDAO.readAllInDataTable();
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error finding data: " + ex.Message);
-                return null;
-            }
-        }
     }
 }

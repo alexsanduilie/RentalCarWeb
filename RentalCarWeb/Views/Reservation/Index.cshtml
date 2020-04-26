@@ -5,25 +5,26 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-@Styles.Render("~/Content/tableStyle.css")
-@Styles.Render("~/Content/commonStyle.css")
-@Styles.Render("~/Content/errorStyle.css")
-@Styles.Render("~/Content/buttonStyle.css")
+<br>
+<h4 class="error">@ViewBag.Message</h4>
 
 <form asp-controller="Reservation" asp-action="Index" method="get">
     <p>
-        Search by Car ID or Car Plate: <input type="text" name="search">
-        <input type="submit" value="Filter" />
-        <input type="reset" value="Reset" />
+        <div class="control-label col-md-2"><b>Search by Car Plate:</b></div>
+        <input type="text" name="carPlate" class="form-control text-danger"><br>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
     </p>
 </form>
-
+<br><br>
 <form asp-controller="Reservation Status" asp-action="Index" method="get">
     <p>
-        Search by Reservation Status ID: <input type="text" name="search2">
-        <input type="submit" value="Filter" />
-        <input type="reset" value="Reset" />
+        <div class="control-label col-md-2"><b>Search by Reservation Status ID:</b></div>
+        <input type="text" name="status" class="form-control text-danger"><br>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
     </p>
 </form>
 
@@ -89,8 +90,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { carID = item.carID, customerID = item.costumerID }) |
-                @Html.ActionLink("Details", "Details", new { carID = item.carID, customerID = item.costumerID }) |
-                @Html.ActionLink("Delete", "Delete", new { carID = item.carID, customerID = item.costumerID })
+                @Html.ActionLink("Details", "Details", new { carID = item.carID, customerID = item.costumerID })
             </td>
         </tr>
     }

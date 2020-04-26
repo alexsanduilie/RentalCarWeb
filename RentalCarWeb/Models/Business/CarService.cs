@@ -31,28 +31,12 @@ namespace RentalCarWeb.Models.Business
 
         public int confirmID(string column, string paramValue)
         {
-            try
-            {
                 return carDAO.confirmID(column, paramValue);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error getting customer ID: " + ex.Message);
-                return 0;
-            }
         }
 
         public int confirmOverallLocation(string column, string paramValue)
         {
-            try
-            {
                 return carDAO.confirmOverallLocation(column, paramValue);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error getting location: " + ex.Message);
-                return 0;
-            }
         }
 
         public DataTable readAllInDataTable()
@@ -61,10 +45,10 @@ namespace RentalCarWeb.Models.Business
             {
                 return carDAO.readAllInDataTable();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error finding data: " + ex.Message);
                 return null;
+                throw;
             }
         }
 
@@ -76,10 +60,10 @@ namespace RentalCarWeb.Models.Business
                 cars = carDAO.readAll();
                 return cars;
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                MessageBox.Show("Error getting records: " + ex.Message);
                 return cars;
+                throw;
             }
         }
     }

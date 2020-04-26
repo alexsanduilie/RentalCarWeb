@@ -3,6 +3,7 @@ using RentalCarWeb.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
@@ -22,8 +23,15 @@ namespace RentalCarWeb.Controllers
             ViewBag.NameSortParam = sortOrder == "Customer Name" ? "Customer Name_desc" : "Customer Name";
             ViewBag.BirthDateSortParam = sortOrder == "Birth Date" ? "Birth Date_desc" : "Birth Date";
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
+            try
+            {
+                customers = customerService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
 
-            customers = customerService.readAll();
             switch (sortOrder)
             {
                 case "Customer ID_desc":
@@ -54,24 +62,32 @@ namespace RentalCarWeb.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                customers = customers.Where(c => c.customerID.ToString() == search || c.name.Contains(search));
-            }       
+                customers = customers.Where(c => c.customerID.ToString() == search.Trim() || c.name.Contains(search.Trim()));
+            }
             return View(customers);
         }
 
         // GET: Customer/Details/5
         public ActionResult Details(string id)
         {
-            customers = customerService.readAll();
+            try
+            {
+                customers = customerService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
             Customer customer = customers.FirstOrDefault(c => c.customerID.ToString() == id);
-            if(customer == null)
+            if (customer == null)
             {
                 return HttpNotFound();
-            } else
+            }
+            else
             {
                 return View(customer);
             }
-            
+
         }
 
         // GET: Customer/Create
@@ -88,16 +104,29 @@ namespace RentalCarWeb.Controllers
             {
                 return View(customer);
             }
-            customerService.create(customer);
-            ViewBag.Message = "User created";
-            //return View(customer);
-            return RedirectToAction("Index");   
+            try
+            {
+                customerService.create(customer);
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+                return View(customer);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Customer/Edit/5
         public ActionResult Edit(string id)
         {
-            customers = customerService.readAll();
+            try
+            {
+                customers = customerService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
             Customer customer = customers.FirstOrDefault(c => c.customerID.ToString() == id);
             if (customer == null)
             {
@@ -113,7 +142,14 @@ namespace RentalCarWeb.Controllers
         [HttpPost]
         public ActionResult Edit(string id, Customer customer)
         {
-            customers = customerService.readAll();
+            try
+            {
+                customers = customerService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
             var customerToEdit = customers.FirstOrDefault(c => c.customerID.ToString() == id);
 
             if (customer == null)
@@ -125,19 +161,27 @@ namespace RentalCarWeb.Controllers
                 if (!ModelState.IsValid)
                 {
                     return View(customer);
-                } else
-                {                   
+                }
+                else
+                {
                     customerToEdit.customerID = customer.customerID;
                     customerToEdit.name = customer.name;
                     customerToEdit.birthDate = customer.birthDate;
                     customerToEdit.location = customer.location;
-                    customerToEdit.zipCode = customer.zipCode;                     
-                    customerService.update(customerToEdit);
-                    ViewBag.Message = "Customer updated successfully";
+                    customerToEdit.zipCode = customer.zipCode;
+                    try
+                    {
+                        customerService.update(customerToEdit);
+                    }
+                    catch (SqlException ex)
+                    {
+                        ViewBag.Message = "SQL error: " + ex.Message;
+                        return View(customer);
+                    }
                     return RedirectToAction("Index");
-                }               
+                }
             }
-          
+
         }
 
         // GET: Customer/Delete/5

@@ -31,6 +31,7 @@ namespace RentalCarWeb.Controllers
             ViewBag.PriceSortParam = sortOrder == "Price" ? "Price_desc" : "Price";
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
 
+            //USING LINQ
             allCars = from c in crdc.Cars select c;
 
             switch (sortOrder)
@@ -73,34 +74,35 @@ namespace RentalCarWeb.Controllers
                     break;
             }
 
-            Reservation r = null;
+            //this reservation is just for testing, for not having a null one when the INSERT condtion is not met because the reservation status is <> 1 (when searching db records)
+            Reservation r = new Reservation(0, "", 0, 1, DateTime.Now, DateTime.Now, "", "");
             if (!String.IsNullOrEmpty(model) && String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city))
             {
-                if (!carValidations.validateCarModel(model))
+                if (!carValidations.validateCarModel(model.Trim()))
                 {
                     ViewBag.Message = "This model does not exist, please enter another model";
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Model.Equals(model));
+                    allCars = allCars.Where(c => c.Model.Equals(model.Trim()));
                     return View(allCars);
                 }
             }
             else if (String.IsNullOrEmpty(model) && String.IsNullOrEmpty(plate) && !String.IsNullOrEmpty(city))
             {
-                if (!carValidations.validateCity(city))
+                if (!carValidations.validateCity(city.Trim()))
                 {
                     ViewBag.Message = "This location does not exist, please enter another location";
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Location.Equals(city));
+                    allCars = allCars.Where(c => c.Location.Equals(city.Trim()));
                     return View(allCars);
                 }
             }
             else if (String.IsNullOrEmpty(model) && !String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && String.IsNullOrEmpty(startDate) && String.IsNullOrEmpty(EndDate))
             {
-                if (!carValidations.validateCarPlate(plate))
+                if (!carValidations.validateCarPlate(plate.Trim()))
                 {
                     if (!Regex.IsMatch(plate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
                     {
@@ -113,15 +115,15 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Plate.Equals(plate));
+                    allCars = allCars.Where(c => c.Plate.Equals(plate.Trim()));
                     return View(allCars);
                 }
             }
             else if (String.IsNullOrEmpty(model) && !String.IsNullOrEmpty(plate) && String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(startDate) && !String.IsNullOrEmpty(EndDate))
             {
-                if (!carValidations.validateCarPlate(plate))
+                if (!carValidations.validateCarPlate(plate.Trim()))
                 {
-                    if (!Regex.IsMatch(plate, "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
+                    if (!Regex.IsMatch(plate.Trim(), "[A-Z]{2} [0-9]{2} [A-Z]{3}"))
                     {
                         ViewBag.Message = "Invalid input type, the car plate format should be: ZZ 00 ZZZ";
                     }
@@ -132,7 +134,7 @@ namespace RentalCarWeb.Controllers
                 }
                 else
                 {
-                    allCars = allCars.Where(c => c.Plate.Equals(plate));
+                    allCars = allCars.Where(c => c.Plate.Equals(plate.Trim()));
                     if (!reservationValidations.validateDate(DateTime.Parse(startDate), DateTime.Parse(EndDate)))
                     {
                         ViewBag.Message = "End Date should be equal or higher than Start Date";

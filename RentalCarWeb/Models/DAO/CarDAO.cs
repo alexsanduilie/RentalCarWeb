@@ -47,10 +47,11 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(getID, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
                     cmd.Parameters.AddWithValue("@param", paramValue);
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    dr = cmd.ExecuteReader();
                     if (dr.Read())
                     {
                         if (column == "Location")
@@ -70,15 +71,19 @@ namespace RentalCarWeb.Models.DAO
                             }
                         }
                     }
+                    
+                    return no;
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("SQL error: " + ex.Message);
+                    return no;                 
+                }
+                finally
+                {
                     dr.Close();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    return no;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return no;
                 }
             }
 
@@ -92,23 +97,27 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(getID, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
                     cmd.Parameters.AddWithValue("@param", paramValue);
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    dr = cmd.ExecuteReader();
                     if (dr.Read())
                     {
                         no = 1;
-                    }
-                    dr.Close();
-                    cmd.Parameters.Clear();
-                    cmd.Dispose();
+                    }                   
                     return no;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("SQL error: " + ex.Message);
                     return no;
+                }
+                finally
+                {
+                    dr.Close();
+                    cmd.Parameters.Clear();
+                    cmd.Dispose();
                 }
             }
 
@@ -126,15 +135,17 @@ namespace RentalCarWeb.Models.DAO
                 {
                     dataAdapter = new SqlDataAdapter(cmd);
                     dataAdapter.Fill(dt);
-
-                    cmd.Parameters.Clear();
-                    cmd.Dispose();
                     return dt;
                 }
-                catch (SqlException ex)
+                catch (SqlException)
                 {
-                    MessageBox.Show("SQL error: " + ex.Message);
                     return dt;
+                    throw;
+                }
+                finally
+                {
+                    cmd.Parameters.Clear();
+                    cmd.Dispose();
                 }
             }
 
@@ -147,24 +158,26 @@ namespace RentalCarWeb.Models.DAO
 
             using (SqlCommand cmd = new SqlCommand(readSQL, MvcApplication.conn))
             {
+                SqlDataReader dr = null;
                 try
                 {
-                    SqlDataReader dr = cmd.ExecuteReader();
-
+                    dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
                         cars.Add(new Car(Int32.Parse(dr["CarID"].ToString()), dr["Plate"].ToString(), dr["Manufacturer"].ToString(), dr["Model"].ToString(), Double.Parse(dr["PricePerDay"].ToString()), dr["Location"].ToString()));
                     }
-
+                    return cars;
+                }
+                catch (SqlException)
+                {                   
+                    return cars;
+                    throw;
+                }
+                finally
+                {
                     dr.Close();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
-                    return cars;
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("SQL error: " + ex.Message);
-                    return cars;
                 }
             }
 

@@ -22,7 +22,7 @@ namespace RentalCarWeb.Controllers
         List<Coupon> coupons = new List<Coupon>();
 
         // GET: Reservation
-        public ActionResult Index(string search, string search2, string sortOrder)
+        public ActionResult Index(string carPlate, string status, string sortOrder)
         {
             ViewBag.CarIDSortParam = String.IsNullOrEmpty(sortOrder) ? "Car ID_desc" : "";
             ViewBag.PlateSortParam = sortOrder == "Car Plate" ? "Car Plate_desc" : "Car Plate";
@@ -33,7 +33,15 @@ namespace RentalCarWeb.Controllers
             ViewBag.LocationSortParam = sortOrder == "Location" ? "Location_desc" : "Location";
             ViewBag.CouponCodeSortParam = sortOrder == "Coupon Code" ? "Coupon Code_desc" : "Coupon Code";
 
-            reservations = reservationService.readAll();
+            try
+            {
+                reservations = reservationService.readAll();
+            }
+            catch(SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
+            
             switch (sortOrder)
             {
                 case "Car ID_desc":
@@ -86,12 +94,13 @@ namespace RentalCarWeb.Controllers
                     break;
             }
 
-            if (!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(carPlate))
             {
-                reservations = reservations.Where(r => r.carPlate.Contains(search) || r.carID.ToString() == search);
-            } else if (!String.IsNullOrEmpty(search2))
+                reservations = reservations.Where(r => r.carPlate.Contains(carPlate.Trim()));
+            }
+            else if (!String.IsNullOrEmpty(status))
             {
-                reservations = reservations.Where(r => r.reservStatsID.ToString() == search2);
+                reservations = reservations.Where(r => r.reservStatsID.ToString() == status.Trim());
             }
             return View(reservations);
         }
@@ -99,7 +108,14 @@ namespace RentalCarWeb.Controllers
         // GET: Reservation/Details/5
         public ActionResult Details(string carID, string customerID)
         {
-            reservations = reservationService.readAll();
+            try
+            {
+                reservations = reservationService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
             Reservation reservation = reservations.FirstOrDefault(r => r.carID.ToString() == carID && r.costumerID.ToString() == customerID);
             if (reservation == null)
             {
@@ -115,7 +131,15 @@ namespace RentalCarWeb.Controllers
         public ActionResult Create()
         {
             List<SelectListItem> couponCodes = new List<SelectListItem>();
-            coupons = couponService.readAll();
+            try
+            {
+                coupons = couponService.readAll();
+            }
+            catch(SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
+            
             foreach (Coupon c in coupons)
             {
                 couponCodes.Add(new SelectListItem { Text = c.couponCode, Value = c.couponCode });
@@ -129,8 +153,18 @@ namespace RentalCarWeb.Controllers
         public ActionResult Create(Reservation reservation)
         {
             List<SelectListItem> couponCodes = new List<SelectListItem>();
-            Reservation r = null;
-            coupons = couponService.readAll();
+            //this reservation is just for testing, for not having a null one when the INSERT condtion is not met because the reservation status is <> 1 (when searching db records)
+            Reservation r = new Reservation(0, "", 0, 1, DateTime.Now, DateTime.Now, "", "");
+            try
+            {
+                coupons = couponService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+                return View(reservation);
+            }
+
             foreach (Coupon c in coupons)
             {
                 couponCodes.Add(new SelectListItem { Text = c.couponCode, Value = c.couponCode });
@@ -179,13 +213,13 @@ namespace RentalCarWeb.Controllers
                 try
                 {
                     reservationService.create(reservation);
-                }catch(SqlException ex)
+                }
+                catch (SqlException ex)
                 {
                     ViewBag.Message = "SQL error: " + ex.Message;
                     ViewData["ListCoupon"] = couponCodes;
                     return View(reservation);
                 }
-                
                 return RedirectToAction("Index");
             }
 
@@ -194,8 +228,17 @@ namespace RentalCarWeb.Controllers
         // GET: Reservation/Edit/5
         public ActionResult Edit(string carID, string customerID)
         {
+            Reservation reservation;
             List<SelectListItem> couponCodes = new List<SelectListItem>();
-            coupons = couponService.readAll();
+            try
+            {
+                coupons = couponService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
+
             foreach (Coupon c in coupons)
             {
                 couponCodes.Add(new SelectListItem { Text = c.couponCode, Value = c.couponCode });
@@ -212,8 +255,15 @@ namespace RentalCarWeb.Controllers
             ViewBag.SelectList = new SelectList(dictionary, "Key", "Value");
             ViewData["ViewBag.SelectList"] = reservationStatuses;
 
-            reservations = reservationService.readAll();
-            Reservation reservation = reservations.FirstOrDefault(r => r.carID.ToString() == carID && r.costumerID.ToString() == customerID);
+            try
+            {
+                reservations = reservationService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
+            reservation = reservations.FirstOrDefault(r => r.carID.ToString() == carID && r.costumerID.ToString() == customerID);
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -229,7 +279,14 @@ namespace RentalCarWeb.Controllers
         public ActionResult Edit(string carID, string customerID, Reservation reservation)
         {
             List<SelectListItem> couponCodes = new List<SelectListItem>();
-            coupons = couponService.readAll();
+            try
+            {
+                coupons = couponService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
             foreach (Coupon c in coupons)
             {
                 couponCodes.Add(new SelectListItem { Text = c.couponCode, Value = c.couponCode });
@@ -246,8 +303,15 @@ namespace RentalCarWeb.Controllers
             ViewBag.SelectList = new SelectList(dictionary, "Key", "Value");
             ViewData["ViewBag.SelectList"] = reservationStatuses;
 
-            reservations = reservationService.readAll();
-            var reservationToEdit = reservations.FirstOrDefault(r => r.carID.ToString() == carID && r.costumerID.ToString() == customerID);
+            try
+            {
+                reservations = reservationService.readAll();
+            }
+            catch (SqlException ex)
+            {
+                ViewBag.Message = "SQL error: " + ex.Message;
+            }
+            Reservation reservationToEdit = reservations.FirstOrDefault(r => r.carID.ToString() == carID && r.costumerID.ToString() == customerID);
 
             if (reservation == null)
             {
