@@ -35,25 +35,25 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.CarIDSortParam })
+            @Html.ActionLink("Car ID", "Index", new { sortOrder = ViewBag.CarIDSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam })
+            @Html.ActionLink("Car Plate", "Index", new { sortOrder = ViewBag.PlateSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.CustomerSortParam })
+            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.CustomerSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("Reservation Status", "Index", new { sortOrder = ViewBag.RStatusSortParam })
+            @Html.ActionLink("Reservation Status", "Index", new { sortOrder = ViewBag.RStatusSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParam })
+            @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndDateSortParam })
+            @Html.ActionLink("End Date", "Index", new { sortOrder = ViewBag.EndDateSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
-            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam, carPlate = Request.QueryString["carPlate"], status = Request.QueryString["status"] })
         </th>
         <th>
             @Html.ActionLink("Coupon Code", "Index", new { sortOrder = ViewBag.CouponCodeSortParam })

@@ -1,4 +1,6 @@
-﻿@model IEnumerable<RentalCarWeb.Models.DTO.Customer>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IEnumerable<RentalCarWeb.Models.DTO.Customer>
 
 @{
     ViewBag.Title = "Customer List";
@@ -24,16 +26,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.IdSortParam })
+            @Html.ActionLink("Customer ID", "Index", new { sortOrder = ViewBag.IdSortParam, search = Request.QueryString["search"] })
         </th>
         <th>
-            @Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParam })
+            @Html.ActionLink("Customer Name", "Index", new { sortOrder = ViewBag.NameSortParam, search = Request.QueryString["search"] })
         </th>
         <th>
-            @Html.ActionLink("Birth Date", "Index", new { sortOrder = ViewBag.BirthDateSortParam })
+            @Html.ActionLink("Birth Date", "Index", new { sortOrder = ViewBag.BirthDateSortParam, search = Request.QueryString["search"] })
         </th>
         <th>
-            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam })
+            @Html.ActionLink("Location", "Index", new { sortOrder = ViewBag.LocationSortParam, search = Request.QueryString["search"] })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.zipCode)
