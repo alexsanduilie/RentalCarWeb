@@ -21,7 +21,8 @@ namespace RentalCarWeb.Controllers
             var goldCustomers = (from reservations in crdc.Reservations
                                  group reservations by reservations.CostumerID into g
                                  join customers in crdc.Customers on g.FirstOrDefault().CostumerID equals customers.CostumerID
-                                 where g.FirstOrDefault().StartDate.Date >= DateTime.Now.AddDays(-30).Date && (g.Count() == 4 || g.Count() == 3)
+                                 where g.FirstOrDefault().StartDate.Date >= DateTime.Now.AddDays(-30).Date && (g.Count() >=3)
+                                 orderby g.Count() descending
                                  select new GoldSilverCustomers { name = customers.Name, reservationsNr = (g.Count()) }).ToList();
 
             customers = goldCustomers;
