@@ -34,6 +34,7 @@ namespace RentalCarWeb.Models.DTO
         [DisplayName("End Date")]
         public DateTime endDate { get; set; }
         [Required]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid input type, the name should contain only alphabetic characters")]
         [DisplayName("Location")]
         public string location { get; set; }
         [Required]
